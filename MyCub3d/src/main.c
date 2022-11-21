@@ -6,7 +6,13 @@
 #include "../mlx/mlx.h"
 #include "../includes/cub3d.h"
 
+int n = 0;
 
+double findRadianBetweenTwoVec(t_vec v1, t_vec v2)
+{
+	return (fabs(acos((v1.vx * v2.vx + v1.vy * v2.vy)
+		/ (sqrt(v1.vx * v1.vx + v1.vy * v1.vy) * sqrt(v2.vx * v2.vx + v2.vy * v2.vy)))));
+}
 
 void rotate(double *x, double *y, double angle)
 {
@@ -56,10 +62,10 @@ void init(t_info *info)
 	info->mlx = mlx_init();
 	info->pos.vx = 22.0;
 	info->pos.vy = 11.5;
-	info->dir.vx = -1.0;
-	info->dir.vy = 0.0;
-	info->plane.vx = 0.0;
-	info->plane.vy = 0.66;
+	info->dir.vx = 0.0;
+	info->dir.vy = -1.0;
+	info->plane.vx = 0.66;
+	info->plane.vy = 0.0;
 	info->key_a = 0;
 	info->key_w = 0;
 	info->key_s = 0;
@@ -133,94 +139,59 @@ void	draw(t_info *info)
 
 void	calc(t_info *info)
 {
+	n++;
 	//FLOOR CASTING
-	for(int y = 0; y < height; y++)
+	for(int y = 0; y < height/2; y++)
 	{
 		// rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
-		
-		// float rayDirX0 = info->dirX - info->planeX;
-		// float rayDirY0 = info->dirY - info->planeY;
-		// float rayDirX1 = info->dirX + info->planeX;
-		// float rayDirY1 = info->dirY + info->planeY;
-
-		t_vec rayDir0 = plusVector(info->dir, info->plane);
-		t_vec rayDir1 = minusVector(info->dir, info->plane);
+		//t_vec rayDir0 = plusVector(info->dir, info->plane);
+		//t_vec rayDir1 = minusVector(info->dir, info->plane);
 
 		// Current y position compared to the center of the screen (the horizon)
-		int p = y - height / 2;
+		//int p = y - height / 2;
 
 		// Vertical position of the camera.
-		float posZ = 0.5 * height;
+		//float posZ = 0.5 * height;
 
 		// Horizontal distance from the camera to the floor for the current row.
 		// 0.5 is the z position exactly in the middle between floor and ceiling.
-		float rowDistance = posZ / p;
+		//float rowDistance = posZ / p;
 
 		// calculate the real world step vector we have to add for each x (parallel to camera plane)
 		// adding step by step avoids multiplications with a weight in the inner loop
-		
-		// float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / width;
-		// float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / width;
-
-		t_vec floorStep = multipleVector(rowDistance / (float)width, minusVector(rayDir1, rayDir0));
+		//t_vec floorStep = multipleVector(rowDistance / (float)width, minusVector(rayDir1, rayDir0));
 
 		// real world coordinates of the leftmost column. This will be updated as we step to the right.
-		// float floorX = info->posX + rowDistance * rayDirX0;
-		// float floorY = info->posY + rowDistance * rayDirY0;
-		t_vec floor = plusVector(info->pos , multipleVector(rowDistance, rayDir0));
+		//t_vec floor = plusVector(info->pos , multipleVector(rowDistance, rayDir0));
 
 		for(int x = 0; x < width; x++)
 		{
-			// the cell coord is simply got from the integer parts of floorX and floorY
-			int cellX = (int)(floor.vx);
-			int cellY = (int)(floor.vy);
-
 			// get the texture coordinate from the fractional part
-			int tx = (int)(texWidth * (floor.vx - cellX)) & (texWidth - 1);
-			int ty = (int)(texHeight * (floor.vy - cellY)) & (texHeight - 1);
-
-			// floorX += floorStepX;
-			// floorY += floorStepY;
-			floor = plusVector(floor, floorStep);
-
-			// choose texture and draw the pixel
-			int floorTexture = 3;
-			int ceilingTexture = 6;
+			//floor = plusVector(floor, floorStep);
 
 			int color;
 
-			// floor
-			color = info->texture[floorTexture][texWidth * ty + tx];
-			color = (color >> 1) & 8355711; // make a bit darker
-
+			color = 220*65536 + 100*256 + 0;
 			info->buf[y][x] = color;
 
-			//ceiling (symmetrical, at screenHeight - y - 1 instead of y)
-			color = info->texture[ceilingTexture][texWidth * ty + tx];
-			color = (color >> 1) & 8355711; // make a bit darker
-
+			color = 225*65536 + 30*256 + 0;
 			info->buf[height - y - 1][x] = color;
 		}
 	}
+
 	//WALL CASTING
 	for(int x = 0; x < width; x++)
 	{
 		double cameraX = 2 * x / (double)width - 1;
-		// double rayDirX = info->dirX + info->planeX * cameraX;
-		// double rayDirY = info->dirY + info->planeY * cameraX;
 		t_vec rayDir = plusVector(info->dir, multipleVector(cameraX, info->plane));
 		
 		int mapX = (int)info->pos.vx;
 		int mapY = (int)info->pos.vy;
 
 		//length of ray from current position to next x or y-side
-		// double sideDistX;
-		// double sideDistY;
 		t_vec sideDist;
 		
 		 //length of ray from one x or y-side to next x or y-side
-		// double deltaDistX = fabs(1 / rayDirX);
-		// double deltaDistY = fabs(1 / rayDirY);
 		t_vec deltaDist;
 		deltaDist.vx = fabs(1 / rayDir.vx);
 		deltaDist.vy = fabs(1 / rayDir.vy);
@@ -274,10 +245,18 @@ void	calc(t_info *info)
 			if (worldMap[mapX][mapY] > 0) hit = 1;
 		}
 		if (side == 0)
-			perpWallDist = (mapX - info->pos.vx + (1 - stepX) / 2) / rayDir.vx;
+		{
+			//perpWallDist = (mapX - info->pos.vx + (1 - stepX) / 2) / rayDir.vx;
+			perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * (sideDist.vx);
+		}
 		else
-			perpWallDist = (mapY - info->pos.vy + (1 - stepY) / 2) / rayDir.vy;
+		{	
+			//perpWallDist = (mapY - info->pos.vy + (1 - stepY) / 2) / rayDir.vy;
+			perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * sideDist.vy;
 
+		}
+		if (n==1)
+			printf("x: %d   %lf\n", x, perpWallDist);
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(height / perpWallDist);
 
@@ -326,63 +305,6 @@ void	calc(t_info *info)
 				color = (color >> 1) & 8355711;
 
 			info->buf[y][x] = color;
-		}
-
-		//FLOOR CASTING (vertical version, directly after drawing the vertical wall stripe for the current x)
-		double floorXWall, floorYWall; //x, y position of the floor texel at the bottom of the wall
-
-		//4 different wall directions possible
-		if(side == 0 && rayDir.vx > 0)
-		{
-			floorXWall = mapX;
-			floorYWall = mapY + wallX;
-		}
-		else if(side == 0 && rayDir.vx < 0)
-		{
-			floorXWall = mapX + 1.0;
-			floorYWall = mapY + wallX;
-		}
-		else if(side == 1 && rayDir.vy > 0)
-		{
-			floorXWall = mapX + wallX;
-			floorYWall = mapY;
-		}
-		else
-		{
-			floorXWall = mapX + wallX;
-			floorYWall = mapY + 1.0;
-		}
-
-		double distWall, distPlayer, currentDist;
-
-		distWall = perpWallDist;
-		distPlayer = 0.0;
-
-		if (drawEnd < 0) drawEnd = height; //becomes < 0 when the integer overflows
-
-		//draw the floor from drawEnd to the bottom of the screen
-		for(int y = drawEnd + 1; y < height; y++)
-		{
-			currentDist = height / (2.0 * y - height); //you could make a small lookup table for this instead
-
-			double weight = (currentDist - distPlayer) / (distWall - distPlayer);
-
-			double currentFloorX = weight * floorXWall + (1.0 - weight) * info->pos.vx;
-			double currentFloorY = weight * floorYWall + (1.0 - weight) * info->pos.vy;
-
-			int floorTexX, floorTexY;
-			floorTexX = (int)(currentFloorX * texWidth) % texWidth;
-			floorTexY = (int)(currentFloorY * texHeight) % texHeight;
-
-			int checkerBoardPattern = ((int)(currentFloorX) + (int)(currentFloorY)) % 2;
-			int floorTexture;
-			if(checkerBoardPattern == 0) floorTexture = 3;
-			else floorTexture = 4;
-
-			//floor
-			info->buf[y][x] = (info->texture[floorTexture][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
-			//ceiling (symmetrical!)
-			info->buf[height - y][x] = info->texture[6][texWidth * floorTexY + floorTexX];
 		}
 	}
 }
