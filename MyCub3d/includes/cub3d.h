@@ -4,8 +4,10 @@
 # include <string.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include "../mlx/mlx.h"
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
 
 # define X_EVENT_KEY_PRESS	2
 # define X_EVENT_KEY_RELEASE	3
@@ -127,6 +129,7 @@ void	find_distance(t_cal *cal, t_vec pos);
 void	ray_casting(t_info *info);
 
 // parse.c
+void  open_file_with_validate(char *file_path);
 
 
 #endif

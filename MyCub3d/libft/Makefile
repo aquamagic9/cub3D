@@ -5,89 +5,46 @@
 #                                                     +:+ +:+         +:+      #
 #    By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/25 21:22:05 by junseo            #+#    #+#              #
-#    Updated: 2022/11/25 21:22:14 by junseo           ###   ########.fr        #
+#    Created: 2022/06/22 21:48:39 by junseo            #+#    #+#              #
+#    Updated: 2022/06/24 09:41:31 by junseo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FILES		=	ft_strlen \
-				ft_strlcpy \
-				ft_strlcat \
-				ft_strchr \
-				ft_strrchr \
-				ft_isalpha \
-				ft_isdigit \
-				ft_isalnum \
-				ft_isascii \
-				ft_isprint \
-				ft_toupper \
-				ft_tolower \
-				ft_memset \
-				ft_strncmp \
-				ft_memchr \
-				ft_bzero \
-				ft_memcpy \
-				ft_memcmp \
-				ft_strnstr \
-				ft_atoi \
-				ft_calloc \
-				ft_strdup \
-				ft_substr \
-				ft_strjoin \
-				ft_strjoin \
-				ft_strtrim \
-				ft_split \
-				ft_itoa \
-				ft_strmapi \
-				ft_striteri \
-				ft_putchar_fd \
-				ft_putstr_fd \
-				ft_putendl_fd \
-				ft_putnbr_fd \
-				ft_memmove 
+LIBFT 		=	src/libft/libft.a
 
-FILES_BONUS	=	ft_lstnew \
-				ft_lstadd_front \
-				ft_lstsize \
-				ft_lstlast \
-				ft_lstadd_back \
-				ft_lstdelone \
-				ft_lstclear \
-				ft_lstiter \
-				ft_lstmap
+NAME	= libftgnl.a
 
-DIR_OBJS	= ./
-OBJS		= $(addprefix $(DIR_OBJS), $(addsuffix .o, $(FILES)))
-OBJS_BONUS	= $(addprefix $(DIR_OBJS), $(addsuffix .o, $(FILES_BONUS)))
-DIR_SRCS	= ./
-SRCS		= $(addprefix $(DIR_SRCS), $(addsuffix .c, $(FILES)))
-SRCS_BONUS	= $(addprefix $(DIR_SRCS), $(addsuffix .c, $(FILES_BONUS)))
+LIBFT_DIR	=	src/libft
+GNL_DIR		=	src/get_next_line
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+SRCS	= 	$(GNL_DIR)/get_next_line.c
 
-AR			= ar crus
-RM			= rm -f
+OBJS	= $(SRCS:.c=.o)
 
-NAME		= libft.a
-
-.c.o:		$(SRCS) $(SRCS_BONUS)
-			$(CC) $(CFLAGS) -c $< -o $@
+CC		= cc
+AR		= ar crs
+RM		= rm -f
+CFLAGS	= -Wall -Wextra -Werror
 
 all:		$(NAME)
 
+.c.o:		$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
 $(NAME):	$(OBJS)
+			$(MAKE) -C $(LIBFT_DIR)
+			cp $(LIBFT) ./$(NAME)
 			$(AR) $(NAME) $(OBJS)
 
-bonus:		$(OBJS_BONUS)
-			$(AR) $(NAME) $(OBJS_BONUS)
+clean:
+		$(MAKE) clean -C $(LIBFT_DIR)
+		$(RM) $(OBJS)
 
-clean: 
-			$(RM) $(OBJS) $(OBJS_BONUS)
+fclean: clean
+		$(MAKE) fclean -C $(LIBFT_DIR)
+		$(RM) $(NAME)
 
-fclean: 	clean
-			$(RM) $(NAME)
+re:
+	make fclean
+	make all
 
-re: 		fclean all
-
-.PHONY:		all bonus clean fclean re
+.PHONY: all, bonus, clean, fclean, re

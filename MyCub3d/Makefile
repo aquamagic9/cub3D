@@ -3,7 +3,7 @@ NAME	= cub3D
 SRCDIR	= ./src
 INCDIR	= ./includes
 OBJDIR	= ./obj
-LIBFTDIR	= ./libft
+LIBFTGNL_DIR	= ./libft
 
 SRC		= main.c \
 		  draw.c \
@@ -11,6 +11,7 @@ SRC		= main.c \
 		  key.c \
 		  raycasting.c \
 		  vector_utils.c \
+			parse.c
 
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
@@ -25,7 +26,7 @@ MLX_LNK	= -L $(MLX) -lmlx -framework OpenGL -framework AppKit
 MLX_INC	= -I $(MLX)
 MLX_LIB	= $(addprefix $(MLX),mlx.a)
 
-LIBFT_LIB = -L$(LIBFTDIR) -lft
+LIBFT_LIB = -L$(LIBFTGNL_DIR) -lftgnl
 
 all: obj $(MLX_LIB) $(NAME)
 
@@ -42,15 +43,16 @@ $(LIBFT):
 	@make -C $(LIBFTDIR)
 
 $(NAME): $(OBJ)
-	$(MAKE) -C $(LIBFTDIR)
+	$(MAKE) -C $(LIBFTGNL_DIR)
 	$(CC) $(OBJ) $(MLX_LNK) $(LIBFT_LIB) -lm -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
-	make -C $(LIBFTDIR) clean
-	make -C $(MLX) clean
+	$(MAKE) -C $(LIBFTGNL_DIR) clean
+	$(MAKE) -C $(MLX) clean
 
 fclean: clean
+	$(MAKE) -C $(LIBFTGNL_DIR) fclean
 	rm -rf $(NAME)
 
 re: fclean all
