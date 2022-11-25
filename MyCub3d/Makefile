@@ -3,6 +3,7 @@ NAME	= cub3D
 SRCDIR	= ./src
 INCDIR	= ./includes
 OBJDIR	= ./obj
+LIBFTDIR	= ./libft
 
 SRC		= main.c \
 		  draw.c \
@@ -14,7 +15,7 @@ SRC		= main.c \
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
-CC		= gcc
+CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g -O3
 
 MLX		= ./mlx/
@@ -23,6 +24,8 @@ MLX_LNK	= -L $(MLX) -lmlx -framework OpenGL -framework AppKit
 
 MLX_INC	= -I $(MLX)
 MLX_LIB	= $(addprefix $(MLX),mlx.a)
+
+LIBFT_LIB = -L$(LIBFTDIR) -lft
 
 all: obj $(MLX_LIB) $(NAME)
 
@@ -35,14 +38,21 @@ $(OBJDIR)/%.o:$(SRCDIR)/%.c
 $(MLX_LIB):
 	@make -C $(MLX)
 
+$(LIBFT):
+	@make -C $(LIBFTDIR)
+
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(MLX_LNK) -lm -o $(NAME)
+	$(MAKE) -C $(LIBFTDIR)
+	$(CC) $(OBJ) $(MLX_LNK) $(LIBFT_LIB) -lm -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
+	make -C $(LIBFTDIR) clean
 	make -C $(MLX) clean
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re

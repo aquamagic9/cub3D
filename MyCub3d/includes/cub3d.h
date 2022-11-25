@@ -1,21 +1,21 @@
 #ifndef CUB3D_H
 # define CUB3D_H
+# include <math.h>
+# include <string.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include "../mlx/mlx.h"
+# include "../libft/libft.h"
 
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "../mlx/mlx.h"
-
-#define X_EVENT_KEY_PRESS	2
-#define X_EVENT_KEY_RELEASE	3
-#define X_EVENT_KEY_EXIT	17
-#define texWidth 64
-#define texHeight 64
-#define mapWidth 24
-#define mapHeight 24
-#define width 640
-#define height 480
+# define X_EVENT_KEY_PRESS	2
+# define X_EVENT_KEY_RELEASE	3
+# define X_EVENT_KEY_EXIT	17
+# define texWidth 64
+# define texHeight 64
+# define mapWidth 24
+# define mapHeight 24
+# define width 640
+# define height 480
 
 # define K_A 0
 # define K_S 1
@@ -26,21 +26,21 @@
 
 typedef struct s_vec
 {
-	double vx;
-	double vy;
+	double	vx;
+	double	vy;
 }			t_vec;
 
 typedef struct s_pair
 {
-	double X;
-	double Y;
+	double	X;
+	double	Y;
 }			t_pair;
 
 
 typedef struct s_pairInt
 {
-	int X;
-	int Y;
+	int	X;
+	int	Y;
 }			t_pairInt;
 
 typedef struct s_cal
@@ -125,5 +125,8 @@ void	load_texture(t_info *info);
 void	find_perp_wall_dist(t_cal *cal, t_info *info);
 void	find_distance(t_cal *cal, t_vec pos);
 void	ray_casting(t_info *info);
+
+// parse.c
+
 
 #endif
