@@ -5,6 +5,12 @@ INCDIR	= ./includes
 OBJDIR	= ./obj
 
 SRC		= main.c \
+		  draw.c \
+		  init.c \
+		  key.c \
+		  raycasting.c \
+		  vector_utils.c \
+
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
