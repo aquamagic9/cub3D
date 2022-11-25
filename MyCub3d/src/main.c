@@ -8,11 +8,28 @@
 
 int n = 0;
 
+t_vec normalize(t_vec a)
+{
+	double absV;
+
+	absV = sqrt(a.vx * a.vx + a.vy * a.vy);
+	a.vx = a.vx / absV;
+	a.vy = a.vy / absV;
+	return a; 
+}
+
 double findRadianBetweenTwoVec(t_vec v1, t_vec v2)
 {
 	return (fabs(acos((v1.vx * v2.vx + v1.vy * v2.vy)
 		/ (sqrt(v1.vx * v1.vx + v1.vy * v1.vy) * sqrt(v2.vx * v2.vx + v2.vy * v2.vy)))));
 }
+
+double findRadianBetweenTwoVec2(t_vec v1, t_vec v2)
+{
+	return (fabs((v1.vx * v2.vx + v1.vy * v2.vy)
+		/ (sqrt(v1.vx * v1.vx + v1.vy * v1.vy) * sqrt(v2.vx * v2.vx + v2.vy * v2.vy))));
+}
+
 
 void rotate(double *x, double *y, double angle)
 {
@@ -185,6 +202,9 @@ void	calc(t_info *info)
 		double cameraX = 2 * x / (double)width - 1;
 		t_vec rayDir = plusVector(info->dir, multipleVector(cameraX, info->plane));
 		
+		rayDir = normalize(rayDir);
+		
+		
 		int mapX = (int)info->pos.vx;
 		int mapY = (int)info->pos.vy;
 
@@ -195,25 +215,31 @@ void	calc(t_info *info)
 		t_vec deltaDist;
 		deltaDist.vx = fabs(1 / rayDir.vx);
 		deltaDist.vy = fabs(1 / rayDir.vy);
-
+		//deltaDist.vx = fabs(rayDir.vx/rayDir.vy);
+		//deltaDist.vy = 1;
+		//printf("%lf %lf\n", deltaDist.vx, deltaDist.vy);
+// vx: vy = x : 1;
+// x = vx/vy;
 		double perpWallDist;
 		
 		//what direction to step in x or y-direction (either +1 or -1)
 		int stepX;
 		int stepY;
 		
-		int hit = 0; //was there a wall hit?
+		//int hit = 0; //was there a wall hit?
 		int side; //was a NS or a EW wall hit?
 
 		if (rayDir.vx < 0)
 		{
 			stepX = -1;
 			sideDist.vx = (info->pos.vx - mapX) * deltaDist.vx;
+			//sideDist.vx = (info->pos.vx - mapX);
 		}
 		else
 		{
 			stepX = 1;
 			sideDist.vx = (mapX + 1.0 - info->pos.vx) * deltaDist.vx;
+			//sideDist.vx = (mapX + 1.0 - info->pos.vx);
 		}
 		if (rayDir.vy < 0)
 		{
@@ -226,8 +252,10 @@ void	calc(t_info *info)
 			sideDist.vy = (mapY + 1.0 - info->pos.vy) * deltaDist.vy;
 		}
 
-		while (hit == 0)
+		while (1)
 		{
+			if (worldMap[mapX][mapY] > 0)
+				break;
 			//jump to next map square, OR in x-direction, OR in y-direction
 			if (sideDist.vx < sideDist.vy)
 			{
@@ -242,18 +270,23 @@ void	calc(t_info *info)
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (worldMap[mapX][mapY] > 0) hit = 1;
+			//if (worldMap[mapX][mapY] > 0) hit = 1;
 		}
 		if (side == 0)
 		{
-			//perpWallDist = (mapX - info->pos.vx + (1 - stepX) / 2) / rayDir.vx;
-			perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * (sideDist.vx);
+			perpWallDist = (mapX - info->pos.vx + (1 - stepX) / 2) / rayDir.vx;
+			//perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * (sideDist.vx);
+			//perpWallDist = sideDist.vx  - deltaDist.vx;
+			if (n==1)
+				printf("info->dirx: %lf   info->diry:  %lf  rayDirx: %lf rayDiry: %lf  sideDist.vx: %lf\n", info->dir.vx,info->dir.vy ,rayDir.vx, rayDir.vy ,sideDist.vx);
 		}
 		else
 		{	
-			//perpWallDist = (mapY - info->pos.vy + (1 - stepY) / 2) / rayDir.vy;
-			perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * sideDist.vy;
-
+			perpWallDist = (mapY - info->pos.vy + (1 - stepY) / 2) / rayDir.vy;
+			//perpWallDist = cos(findRadianBetweenTwoVec(info->dir, rayDir)) * sideDist.vy;
+			//perpWallDist =  sideDist.vy  - deltaDist.vy;
+			//if (n==1)
+				//printf("info->dirx: %lf   info->diry:  %lf  rayDirx: %lf rayDiry: %lf  sideDist.vy: %lf\n", info->dir.vx,info->dir.vy ,rayDir.vx, rayDir.vy ,sideDist.vy);
 		}
 		if (n==1)
 			printf("x: %d   %lf\n", x, perpWallDist);
