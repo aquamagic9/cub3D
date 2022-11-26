@@ -24,11 +24,18 @@ double findRadianBetweenTwoVec2(t_vec v1, t_vec v2)
 
 int	main_loop(t_info *info)
 {
-	draw_background(info->buf, 220*65536 + 100*256 + 0, 225*65536 + 30*256 + 0);
-	ray_casting(info);
-	draw(info);
-	key_update(info);
+	draw_background(info->window.buf, 220*65536 + 100*256 + 0, 225*65536 + 30*256 + 0);
+	ray_casting(&info->move, &info->window, info->worldMap);
+	draw(&info->window);
+	key_update(&info->key, &info->move, info->worldMap);
 	return (0);
+}
+
+int	exit_button_close()
+{
+	//free처리
+	exit(1);
+	return (1);
 }
 
 int	main(void)
@@ -69,13 +76,13 @@ int	main(void)
 		}
 	}
 	init(&info);
-	if (!set_texture(&info.texture))
+	if (!set_texture(&info.window.texture))
 		return (0);
-	load_texture(&info);
+	load_texture(&info.window);
 	
-	mlx_loop_hook(info.mlx, &main_loop, &info);
-	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
-	mlx_hook(info.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
-
-	mlx_loop(info.mlx);
+	mlx_loop_hook(info.window.mlx, &main_loop, &info);
+	mlx_hook(info.window.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+	mlx_hook(info.window.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
+	mlx_hook(info.window.win, BUTTON_CLOSE, 0, &exit_button_close, NULL);
+	mlx_loop(info.window.mlx);
 }

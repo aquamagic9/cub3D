@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:14:18 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:52:26 by junseo           ###   ########.fr       */
+/*   Updated: 2021/12/10 17:48:20 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 char	*ft_strnstr(const char *dest, const char *src, size_t len)
 {

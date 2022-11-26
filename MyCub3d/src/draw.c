@@ -44,7 +44,7 @@ void	draw_background(int buf[height][width], int floorColor, int ceilColor)
 	}
 }
 
-void	draw_texture(t_textureInfo *t, t_cal *cal, t_info *info, int x)
+void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 {
 	int		tex_x;
 	int		tex_y;
@@ -65,13 +65,13 @@ void	draw_texture(t_textureInfo *t, t_cal *cal, t_info *info, int x)
 		tex_y = (int)tex_pos & (texHeight - 1);
 		tex_pos += step;
 		if (cal->side == 1)
-			info->buf[y][x] = (info->texture[t->textureNum][texHeight * tex_y + tex_x] >> 1) & 8355711;
+			window->buf[y][x] = (window->texture[t->textureNum][texHeight * tex_y + tex_x] >> 1) & 8355711;
 		else
-			info->buf[y][x] = info->texture[t->textureNum][texHeight * tex_y + tex_x];
+			window->buf[y][x] = window->texture[t->textureNum][texHeight * tex_y + tex_x];
 	}
 }
 
-void	put_texture(t_cal *cal, t_info *info, int x)
+void	put_texture(t_cal *cal, t_move *move, t_window *window, int worldMap[mapWidth][mapHeight], int x)
 {
 	t_textureInfo	t;
 
@@ -82,16 +82,26 @@ void	put_texture(t_cal *cal, t_info *info, int x)
 		t.drawStart = 0;
 	if (t.drawEnd >= height)
 		t.drawEnd = height - 1;
-	t.textureNum = info->worldMap[cal->map.X][cal->map.Y] - 1;
+	
+	t.textureNum = worldMap[cal->map.X][cal->map.Y] - 1; // TODO(hyuncho) : 나중에 삭제
+	if (cal->side == 0 && cal->rayDir.vx > 0)
+		t.textureNum = 1;//서
+	else if (cal->side == 0 && cal->rayDir.vx <= 0)
+		t.textureNum = 4;//동
+	else if (cal->side == 1 && cal->rayDir.vy > 0)
+		t.textureNum = 2;//북
+	else if (cal->side == 1 && cal->rayDir.vy <= 0)
+		t.textureNum = 3;//남
+
 	if (cal->side == 0)
-		t.wallX = info->pos.vy + cal->perpWallDist * cal->rayDir.vy;
+		t.wallX = move->pos.vy + cal->perpWallDist * cal->rayDir.vy;
 	else
-		t.wallX = info->pos.vx + cal->perpWallDist * cal->rayDir.vx;
+		t.wallX = move->pos.vx + cal->perpWallDist * cal->rayDir.vx;
 	t.wallX -= floor(t.wallX);
-	draw_texture(&t, cal, info, x);
+	draw_texture(&t, cal, window, x);
 }
 
-void	draw(t_info *info)
+void	draw(t_window *window)
 {
 	int	x;
 	int	y;
@@ -101,7 +111,7 @@ void	draw(t_info *info)
 	{
 		x = -1;
 		while (++x < width)
-			info->img.data[y * width + x] = info->buf[y][x];
+			window->img.data[y * width + x] = window->buf[y][x];
 	}
-	mlx_put_image_to_window(info->mlx, info->win, info->img.img, 0, 0);
+	mlx_put_image_to_window(window->mlx, window->win, window->img.img, 0, 0);
 }

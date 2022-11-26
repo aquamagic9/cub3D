@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 21:55:06 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:52:20 by junseo           ###   ########.fr       */
+/*   Updated: 2021/11/20 17:11:11 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {

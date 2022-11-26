@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 15:57:30 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:51:10 by junseo           ###   ########.fr       */
+/*   Updated: 2021/11/20 20:15:33 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {

@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:03:29 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:51:53 by junseo           ###   ########.fr       */
+/*   Updated: 2021/12/04 23:36:56 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 static	void	put_nbr(unsigned int n, int fd)
 {

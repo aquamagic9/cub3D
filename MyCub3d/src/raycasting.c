@@ -1,10 +1,10 @@
 #include "../includes/cub3d.h"
 
-void	find_perp_wall_dist(t_cal *cal, t_info *info)
+void	find_perp_wall_dist(t_cal *cal, int worldMap[mapWidth][mapHeight])
 {
 	while (1)
 	{
-		if (info->worldMap[cal->map.X][cal->map.Y] > 0)
+		if (worldMap[cal->map.X][cal->map.Y] > 0)
 			break ;
 		if (cal->sideDist.X < cal->sideDist.Y)
 		{
@@ -51,7 +51,7 @@ void	find_distance(t_cal *cal, t_vec pos)
 	}
 }
 
-void	ray_casting(t_info *info)
+void	ray_casting(t_move *move, t_window *window, int worldMap[mapWidth][mapHeight])
 {
 	int		x;
 	double	camera_x;
@@ -61,11 +61,11 @@ void	ray_casting(t_info *info)
 	while (++x < width)
 	{
 		camera_x = 2 * x / (double)width - 1;
-		cal.rayDir = plus_vector(info->dir, multiple_vector(camera_x, info->plane));
-		cal.map.X = (int)info->pos.vx;
-		cal.map.Y = (int)info->pos.vy;
-		find_distance(&cal, info->pos);
-		find_perp_wall_dist(&cal, info);
-		put_texture(&cal, info, x);
+		cal.rayDir = plus_vector(move->dir, multiple_vector(camera_x, move->plane));
+		cal.map.X = (int)move->pos.vx;
+		cal.map.Y = (int)move->pos.vy;
+		find_distance(&cal, move->pos);
+		find_perp_wall_dist(&cal, worldMap);
+		put_texture(&cal, move, window, worldMap, x);
 	}
 }

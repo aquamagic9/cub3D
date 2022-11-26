@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 20:15:44 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:50:45 by junseo           ###   ########.fr       */
+/*   Updated: 2021/11/14 00:04:15 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 static int	is_space(char c)
 {

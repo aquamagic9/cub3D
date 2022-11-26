@@ -23,8 +23,37 @@
 # define K_S 1
 # define K_D 2
 # define K_W 13
+# define K_LEFT 123
+# define K_RIGHT 124
 # define K_ESC 53
+# define BUTTON_CLOSE 17
 
+enum e_texture
+{
+  T_ERROR = -1,
+  T_NO,
+  T_SO,
+  T_WE,
+  T_EA,
+  T_FLOOR,
+  T_CEIL,
+  T_MAP,
+  T_EMPTY
+};
+
+enum e_direction
+{
+  D_NORTH,
+  D_SOUTH,
+  D_WEST,
+  D_EAST
+};
+
+enum e_zaxis
+{
+	Z_CEILING,
+	Z_FLOOR
+};
 
 typedef struct s_vec
 {
@@ -78,30 +107,47 @@ typedef struct	s_img
 	int		img_height;
 }				t_img;
 
-typedef struct	s_info
+typedef struct	s_key
 {
-	t_vec pos;
-	t_vec dir;
-	t_vec plane;
-	void	*mlx;
-	void	*win;
 	int		key_a;
 	int		key_w;
 	int		key_s;
 	int		key_d;
+	int		key_left;
+	int		key_right;
 	int		key_esc;
-	t_img	img;
-	int		buf[height][width];
-	double	zBuffer[width];
-	int		**texture;
+}				t_key;
+
+typedef struct s_move
+{
+	t_vec	pos;
+	t_vec	dir;
+	t_vec	plane;
 	double	moveSpeed;
 	double	rotSpeed;
-	int	worldMap[mapWidth][mapHeight];
+}				t_move;
+
+typedef struct s_window
+{
+	void	*mlx;
+	void	*win;
+	t_img	img; // TODO: NEED MODIFY
+	int		buf[height][width];
+	int		**texture;
+}				t_window;
+
+typedef struct	s_info
+{
+	t_key		key;
+	t_move		move;
+	t_window	window;
+  	char 		**texture_file;
+	int			worldMap[mapWidth][mapHeight];
 }				t_info;
 
 //vector_utils.c
 void rotate(double *x, double *y, double angle);
-void rotate_my_view(t_info *info, double angle);
+void	rotate_my_view(t_move *move, double angle);
 t_vec plus_vector(t_vec a, t_vec b);
 t_vec minus_vector(t_vec a, t_vec b);
 t_vec multiple_vector(double k, t_vec a);
@@ -109,27 +155,28 @@ t_vec multiple_vector(double k, t_vec a);
 //draw.c
 int set_texture(int ***texture);
 void draw_background(int buf[height][width], int floorColor, int ceilColor);
-void draw_texture(t_textureInfo *t, t_cal *cal, t_info *info, int x);
-void put_texture(t_cal *cal, t_info *info, int x);
-void	draw(t_info *info);
+void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x);
+void	put_texture(t_cal *cal, t_move *move, t_window *window, int worldMap[mapWidth][mapHeight], int x);
+void	draw(t_window *window);
 
 //key.c
-int		key_release(int key, t_info *info);
-void	key_update(t_info *info);
-int		key_press(int key, t_info *info);
+int	key_release(int key, t_key *key_state);
+void	key_update(t_key *key, t_move *move, int worldMap[mapWidth][mapHeight]);
+int	key_press(int key, t_key *key_state);
 
 //init.c
 void init(t_info *info);
-void	load_image(t_info *info, int *texture, char *path, t_img *img);
-void	load_texture(t_info *info);
+void	load_image(t_window *window, int *texture, char *path, t_img *img);
+void	load_texture(t_window *win);
 
 //raycasting.c
-void	find_perp_wall_dist(t_cal *cal, t_info *info);
+void	find_perp_wall_dist(t_cal *cal, int worldMap[mapWidth][mapHeight]);
 void	find_distance(t_cal *cal, t_vec pos);
-void	ray_casting(t_info *info);
+void	ray_casting(t_move *move, t_window *window, int worldMap[mapWidth][mapHeight]);
 
 // parse.c
 void  open_file_with_validate(char *file_path);
 
+void  exit_with_error(char *str);
 
 #endif

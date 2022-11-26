@@ -6,11 +6,11 @@
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 13:19:22 by junseo            #+#    #+#             */
-/*   Updated: 2022/06/22 22:51:58 by junseo           ###   ########.fr       */
+/*   Updated: 2022/04/10 17:48:46 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 static size_t	calc_size(char const *s, char c)
 {
