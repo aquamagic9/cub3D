@@ -49,7 +49,7 @@ enum e_direction
   D_EAST
 };
 
-enum e_zaxis
+enum e_zAxis
 {
 	Z_CEILING,
 	Z_FLOOR

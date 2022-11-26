@@ -8,7 +8,7 @@ int save_wall_texture(char *line, enum e_direction direction, t_info *info)
   return (0);
 }
 
-int save_ceil_floor_color(char *line, enum e_zaxis z, t_info *info)
+int save_ceil_floor_color(char *line, enum e_zAxis z, t_info *info)
 {
 	int	color[3];
 	int	i;
