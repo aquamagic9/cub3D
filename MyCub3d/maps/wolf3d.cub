@@ -1,7 +1,7 @@
-NO ./images/bluestone.png
-SO ./images/bluestone.png
-WE ./images/bluestone.png
-EA ./images/bluestone.png
+NO ./textures/bluestone.xpm
+SO ./textures/mossy.xpm
+WE ./textures/wood.xpm
+EA ./textures/colorstone.xpm
 
 
 

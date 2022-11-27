@@ -1,11 +1,7 @@
+F 29,206,195
+C 64,64,64
+
 NO ./textures/bluestone.xpm
 SO ./textures/mossy.xpm
 WE ./textures/wood.xpm
 EA ./textures/colorstone.xpm
-
-F 85,85,85
-C 174,91,200
-
-111
-1N1
-111

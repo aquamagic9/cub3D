@@ -2,10 +2,10 @@ F 34,23,45
 F 255,0,0
 C 64,64,64
 
-NO ./images/wall1.png
-SO ./images/wall2.png
-WE ./images/wall3.png
-EA ./images/wall4.png
+NO ./textures/bluestone.xpm
+SO ./textures/mossy.xpm
+WE ./textures/wood.xpm
+EA ./textures/colorstone.xpm
 
 111111     1111111111111
 100001     1000000000001
