@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/27 21:55:27 by junseo            #+#    #+#             */
+/*   Updated: 2022/11/27 21:55:27 by junseo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 int	key_release(int key, t_key *key_state)
@@ -19,69 +31,30 @@ int	key_release(int key, t_key *key_state)
 	return (0);
 }
 
-void	key_update(t_key *key, t_move *move, int **worldMap)
+void	key_move(int **world_map, t_vec *pos, t_vec dir, double speed)
 {
-	// if (key->key_w)
-	// {
-	// 	if (!worldMap[(int)(move->pos.vx + move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
-	// 		move->pos.vx += move->dir.vx * move->moveSpeed;
-	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->dir.vy * move->moveSpeed)])
-	// 		move->pos.vy += move->dir.vy * move->moveSpeed;
-	// }
-	// if (key->key_s)
-	// {
-	// 	if (!worldMap[(int)(move->pos.vx - move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
-	// 		move->pos.vx -= move->dir.vx * move->moveSpeed;
-	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->dir.vy * move->moveSpeed)])
-	// 		move->pos.vy -= move->dir.vy * move->moveSpeed;
-	// }
-	// if (key->key_a)
-	// {
-	// 	if (!worldMap[(int)(move->pos.vx - move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
-	// 		move->pos.vx -= move->plane.vx * move->moveSpeed;
-	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->plane.vy * move->moveSpeed)])
-	// 		move->pos.vy -= move->plane.vy * move->moveSpeed;
-	// }
-	// if (key->key_d)
-	// {
-	// 	if (!worldMap[(int)(move->pos.vx + move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
-	// 		move->pos.vx += move->plane.vx * move->moveSpeed;
-	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->plane.vy * move->moveSpeed)])
-	// 		move->pos.vy += move->plane.vy * move->moveSpeed;
-	// }
-	if (key->key_w)
-	{
-		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx + move->dir.vx * move->moveSpeed)])
-			move->pos.vx += move->dir.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vy + move->dir.vy * move->moveSpeed)][(int)(move->pos.vx)])
-			move->pos.vy += move->dir.vy * move->moveSpeed;
-	}
-	if (key->key_s)
-	{
-		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx - move->dir.vx * move->moveSpeed)])
-			move->pos.vx -= move->dir.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vy - move->dir.vy * move->moveSpeed)][(int)(move->pos.vx)])
-			move->pos.vy -= move->dir.vy * move->moveSpeed;
-	}
-	if (key->key_a)
-	{
-		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx - move->plane.vx * move->moveSpeed)])
-			move->pos.vx -= move->plane.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vy - move->plane.vy * move->moveSpeed)][(int)(move->pos.vx)])
-			move->pos.vy -= move->plane.vy * move->moveSpeed;
-	}
-	if (key->key_d)
-	{
-		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx + move->plane.vx * move->moveSpeed)])
-			move->pos.vx += move->plane.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vy + move->plane.vy * move->moveSpeed)][(int)(move->pos.vx)])
-			move->pos.vy += move->plane.vy * move->moveSpeed;
-	}
+	if (!world_map[(int)(pos->vy)][(int)(pos->vx + dir.vx * speed)])
+		pos->vx += dir.vx * speed;
+	if (!world_map[(int)(pos->vy + dir.vy * speed)][(int)(pos->vx)])
+		pos->vy += dir.vy * speed;
+}
 
+void	key_update(t_key *key, t_move *move, int **world_map)
+{
+	if (key->key_w)
+		key_move(world_map, &move->pos, move->dir, move->move_speed);
+	if (key->key_s)
+		key_move(world_map, &move->pos, \
+			multiple_vector(-1, move->dir), move->move_speed);
+	if (key->key_a)
+		key_move(world_map, &move->pos, \
+			multiple_vector(-1, move->plane), move->move_speed);
+	if (key->key_d)
+		key_move(world_map, &move->pos, move->plane, move->move_speed);
 	if (key->key_left)
-		rotate_my_view(move, -move->rotSpeed);
+		rotate_my_view(move, -move->rot_speed);
 	if (key->key_right)
-		rotate_my_view(move, move->rotSpeed);
+		rotate_my_view(move, move->rot_speed);
 	if (key->key_esc)
 		exit(0);
 }

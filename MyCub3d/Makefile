@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/11/27 23:04:28 by junseo            #+#    #+#              #
+#    Updated: 2022/11/27 23:04:42 by junseo           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME	= cub3D
 
 SRCDIR	= ./src
@@ -13,7 +25,11 @@ SRC		= main.c \
 		  vector_utils.c \
 	      parse.c \
 		  error.c \
-		  utils.c
+		  utils.c \
+		  validation.c \
+		  map.c \
+		  config_setter.c\
+		  load.c
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/27 21:55:19 by junseo            #+#    #+#             */
+/*   Updated: 2022/11/27 21:55:19 by junseo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 int	set_texture(int ***texture)
@@ -13,7 +25,7 @@ int	set_texture(int ***texture)
 	i = -1;
 	while (++i < size)
 	{
-		(*texture)[i] = (int *)malloc(sizeof(int) * (texHeight * texWidth));
+		(*texture)[i] = (int *)malloc(sizeof(int) * (TEX_HEIGHT * TEX_WIDTH));
 		if (!*texture)
 			return (-1);
 	}
@@ -21,30 +33,30 @@ int	set_texture(int ***texture)
 	while (++i < size)
 	{
 		j = -1;
-		while (++j < texHeight * texWidth)
+		while (++j < TEX_HEIGHT * TEX_WIDTH)
 		(*texture)[i][j] = 0;
 	}
 	return (1);
 }
 
-void	draw_background(int buf[height][width], int floorColor, int ceilColor)
+void	draw_background(int **buf, int floorColor, int ceilColor)
 {
 	int	x;
 	int	y;
 
 	y = -1;
-	while (++y < height / 2)
+	while (++y < HEIGHT / 2)
 	{
 		x = -1;
-		while (++x < width)
+		while (++x < WIDTH)
 		{
 			buf[y][x] = floorColor;
-			buf[height - y - 1][x] = ceilColor;
+			buf[HEIGHT - y - 1][x] = ceilColor;
 		}
 	}
 }
 
-void		draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
+void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 {
 	int		tex_x;
 	int		tex_y;
@@ -52,22 +64,20 @@ void		draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 	double	tex_pos;
 	int		y;
 
-	tex_x = (int)(t->wallX * (double)texWidth);
-	step = 1.0 * texHeight / t->lineHeight;
-	tex_pos = (t->drawStart - height / 2 + t->lineHeight / 2) * step;
-	if (cal->side == 0 && cal->rayDir.vx > 0)
-		tex_x = texWidth - tex_x - 1;
-	if (cal->side == 1 && cal->rayDir.vy < 0)
-		tex_x = texWidth - tex_x - 1;
-	y = t->drawStart - 1;
-	while (++y < t->drawEnd)
+	tex_x = (int)(t->wall_x * (double)TEX_WIDTH);
+	step = 1.0 * TEX_HEIGHT / t->line_height;
+	tex_pos = (t->draw_start - HEIGHT / 2 + t->line_height / 2) * step;
+	if (cal->side == 0 && cal->ray_dir.vx > 0)
+		tex_x = TEX_WIDTH - tex_x - 1;
+	if (cal->side == 1 && cal->ray_dir.vy < 0)
+		tex_x = TEX_WIDTH - tex_x - 1;
+	y = t->draw_start - 1;
+	while (++y < t->draw_end)
 	{
-		tex_y = (int)tex_pos & (texHeight - 1);
+		tex_y = (int)tex_pos & (TEX_HEIGHT - 1);
 		tex_pos += step;
-		if (cal->side == 1)
-			window->buf[y][x] = (window->texture[t->textureNum][texHeight * tex_y + tex_x] >> 1) & 8355711;
-		else
-			window->buf[y][x] = window->texture[t->textureNum][texHeight * tex_y + tex_x];
+		window->buf[y][x] = \
+			window->texture[t->texture_num][TEX_HEIGHT * tex_y + tex_x];
 	}
 }
 
@@ -75,28 +85,26 @@ void	put_texture(t_cal *cal, t_move *move, t_window *window, int x)
 {
 	t_textureInfo	t;
 
-	t.lineHeight = (int)(height / cal->perpWallDist);
-	t.drawStart = -t.lineHeight / 2 + height / 2;
-	t.drawEnd = t.lineHeight / 2 + height / 2;
-	if (t.drawStart < 0)
-		t.drawStart = 0;
-	if (t.drawEnd >= height)
-		t.drawEnd = height - 1;
-	
-	if (cal->side == 0 && cal->rayDir.vx > 0)
-		t.textureNum = D_WEST;//서
-	else if (cal->side == 0 && cal->rayDir.vx <= 0)
-		t.textureNum = D_EAST;//동
-	else if (cal->side == 1 && cal->rayDir.vy > 0)
-		t.textureNum = D_NORTH;//북
-	else if (cal->side == 1 && cal->rayDir.vy <= 0)
-		t.textureNum = D_SOUTH;//남
-
+	t.line_height = (int)(HEIGHT / cal->perp_wall_dist);
+	t.draw_start = -t.line_height / 2 + HEIGHT / 2;
+	t.draw_end = t.line_height / 2 + HEIGHT / 2;
+	if (t.draw_start < 0)
+		t.draw_start = 0;
+	if (t.draw_end >= HEIGHT)
+		t.draw_end = HEIGHT - 1;
+	if (cal->side == 0 && cal->ray_dir.vx > 0)
+		t.texture_num = D_WEST;
+	else if (cal->side == 0 && cal->ray_dir.vx <= 0)
+		t.texture_num = D_EAST;
+	else if (cal->side == 1 && cal->ray_dir.vy > 0)
+		t.texture_num = D_NORTH;
+	else if (cal->side == 1 && cal->ray_dir.vy <= 0)
+		t.texture_num = D_SOUTH;
 	if (cal->side == 0)
-		t.wallX = move->pos.vy + cal->perpWallDist * cal->rayDir.vy;
+		t.wall_x = move->pos.vy + cal->perp_wall_dist * cal->ray_dir.vy;
 	else
-		t.wallX = move->pos.vx + cal->perpWallDist * cal->rayDir.vx;
-	t.wallX -= floor(t.wallX);
+		t.wall_x = move->pos.vx + cal->perp_wall_dist * cal->ray_dir.vx;
+	t.wall_x -= floor(t.wall_x);
 	draw_texture(&t, cal, window, x);
 }
 
@@ -106,11 +114,11 @@ void	draw(t_window *window)
 	int	y;
 
 	y = -1;
-	while (++y < height)
+	while (++y < HEIGHT)
 	{
 		x = -1;
-		while (++x < width)
-			window->img.data[y * width + x] = window->buf[y][x];
+		while (++x < WIDTH)
+			window->img.data[y * WIDTH + x] = window->buf[y][x];
 	}
 	mlx_put_image_to_window(window->mlx, window->win, window->img.img, 0, 0);
 }

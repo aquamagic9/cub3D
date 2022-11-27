@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/27 21:55:22 by junseo            #+#    #+#             */
+/*   Updated: 2022/11/27 21:55:22 by junseo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
-void  exit_with_error(char *str)
+void	exit_with_error(char *str)
 {
-  printf("Error\n");
-  if (str)
-    printf("%s\n", str);
-  exit(1);
+	printf("Error\n");
+	if (str)
+		printf("%s\n", str);
+	exit(1);
 }

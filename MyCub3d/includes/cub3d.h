@@ -1,33 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/27 21:56:17 by junseo            #+#    #+#             */
+/*   Updated: 2022/11/27 21:56:18 by junseo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
-#define CUB3D_H
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include "../mlx/mlx.h"
-#include "../libft/includes/libft.h"
-#include "../libft/includes/get_next_line.h"
+# define CUB3D_H
+# include <math.h>
+# include <string.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include "../mlx/mlx.h"
+# include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
 
-#define X_EVENT_KEY_PRESS 2
-#define X_EVENT_KEY_RELEASE 3
-#define X_EVENT_KEY_EXIT 17
-#define texWidth 64
-#define texHeight 64
-#define mapWidth 24
-#define mapHeight 24
-#define width 640
-#define height 480
-#define PI 3.141592
+# define X_EVENT_KEY_PRESS 2
+# define X_EVENT_KEY_RELEASE 3
+# define X_EVENT_KEY_EXIT 17
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
+# define WIDTH 640
+# define HEIGHT 480
+# define PI 3.141592
 
-#define K_A 0
-#define K_S 1
-#define K_D 2
-#define K_W 13
-#define K_LEFT 123
-#define K_RIGHT 124
-#define K_ESC 53
-#define BUTTON_CLOSE 17
+# define K_A 0
+# define K_S 1
+# define K_D 2
+# define K_W 13
+# define K_LEFT 123
+# define K_RIGHT 124
+# define K_ESC 53
+# define BUTTON_CLOSE 17
 
 enum e_texture
 {
@@ -65,83 +75,82 @@ enum e_zAxis
 
 typedef struct s_vec
 {
-	double vx;
-	double vy;
-} t_vec;
+	double	vx;
+	double	vy;
+}			t_vec;
 
 typedef struct s_pair
 {
-	double X;
-	double Y;
-} t_pair;
+	double	x;
+	double	y;
+}			t_pair;
 
 typedef struct s_pairInt
 {
-	int X;
-	int Y;
-} t_pairInt;
+	int	x;
+	int	y;
+}	t_pairInt;
 
 typedef struct s_cal
 {
-	t_vec rayDir;
-	t_pairInt map;
-	t_pair sideDist;
-	t_pair deltaDist;
-	t_pair step;
-	double perpWallDist;
-	int side;
-} t_cal;
+	t_vec		ray_dir;
+	t_pairInt	map;
+	t_pair		side_dist;
+	t_pair		delta_dist;
+	t_pair		step;
+	double		perp_wall_dist;
+	int			side;
+}			t_cal;
 
 typedef struct s_textureInfo
 {
-	int lineHeight;
-	int drawStart;
-	int drawEnd;
-	int textureNum;
-	double wallX;
-	int texX;
-} t_textureInfo;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		texture_num;
+	double	wall_x;
+	int		tex_x;
+}			t_textureInfo;
 
 typedef struct s_img
 {
-	void *img;
-	int *data;
-
-	int size_l;
-	int bpp;
-	int endian;
-	int img_width;
-	int img_height;
-} t_img;
+	void	*img;
+	int		*data;
+	int		size_l;
+	int		bpp;
+	int		endian;
+	int		img_width;
+	int		img_height;
+}			t_img;
 
 typedef struct s_key
 {
-	int key_a;
-	int key_w;
-	int key_s;
-	int key_d;
-	int key_left;
-	int key_right;
-	int key_esc;
-} t_key;
+	int	key_a;
+	int	key_w;
+	int	key_s;
+	int	key_d;
+	int	key_left;
+	int	key_right;
+	int	key_esc;
+}			t_key;
 
 typedef struct s_move
 {
-	t_vec pos;
-	t_vec dir;
-	t_vec plane;
-	double moveSpeed;
-	double rotSpeed;
-} t_move;
+	t_vec	pos;
+	t_vec	dir;
+	t_vec	plane;
+	double	move_speed;
+	double	rot_speed;
+}			t_move;
 
 typedef struct s_window
 {
-	void *mlx;
-	void *win;
-	t_img img; // TODO: NEED MODIFY
-	int buf[height][width];
-	int **texture;
-} t_window;
+	void	*mlx;
+	void	*win;
+	t_img	img;
+	int		**buf;
+	int		**texture;
+}			t_window;
 
 typedef struct s_color
 {
@@ -152,53 +161,79 @@ typedef struct s_color
 
 typedef struct s_info
 {
-	t_key key;
-	t_move move;
-	t_window window;
-	char **texture_file;
-	t_color	*color_set;
-	int		map_width;
-	int		map_height;
-	int		map_start_index;
-	int 	**worldMap;
-} t_info;
+	t_key		key;
+	t_move		move;
+	t_window	window;
+	char		**texture_file;
+	t_color		*color_set;
+	int			map_width;
+	int			map_height;
+	int			map_start_index;
+	int			**world_map;
+}			t_info;
 
 // vector_utils.c
-void rotate(double *x, double *y, double angle);
-void rotate_my_view(t_move *move, double angle);
-t_vec plus_vector(t_vec a, t_vec b);
-t_vec minus_vector(t_vec a, t_vec b);
-t_vec multiple_vector(double k, t_vec a);
+void	rotate(double *x, double *y, double angle);
+void	rotate_my_view(t_move *move, double angle);
+t_vec	plus_vector(t_vec a, t_vec b);
+t_vec	minus_vector(t_vec a, t_vec b);
+t_vec	multiple_vector(double k, t_vec a);
 
 // draw.c
-int set_texture(int ***texture);
-void draw_background(int buf[height][width], int floorColor, int ceilColor);
-void draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x);
-void put_texture(t_cal *cal, t_move *move, t_window *window, int x);
-void draw(t_window *window);
+int		set_texture(int ***texture);
+void	draw_background(int **buf, int floorColor, int ceilColor);
+void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x);
+void	put_texture(t_cal *cal, t_move *move, t_window *window, int x);
+void	draw(t_window *window);
 
 // key.c
-int key_release(int key, t_key *key_state);
-void key_update(t_key *key, t_move *move, int **worldMap);
-int key_press(int key, t_key *key_state);
+int		key_release(int key, t_key *key_state);
+void	key_update(t_key *key, t_move *move, int **world_map);
+int		key_press(int key, t_key *key_state);
+
+// load.c
+void	set_color(t_color *color, int r, int g, int b);
+int		switch_color(t_color color);
+void	load_image(t_window *window, int *texture, char *path, t_img *img);
+void	load_texture(t_info *info);
 
 // init.c
-int	switch_color(t_color color);
-void init(t_info *info);
-void load_image(t_window *window, int *texture, char *path, t_img *img);
-void load_texture(t_info *info);
-void set_color(t_color *color, int r, int g, int b);
+void	init(t_info *info);
 
 // raycasting.c
-void find_perp_wall_dist(t_cal *cal, int **worldMap);
-void find_distance(t_cal *cal, t_vec pos);
-void ray_casting(t_move *move, t_window *window, int **worldMap);
+void	find_perp_wall_dist(t_cal *cal, int **world_map);
+void	find_distance(t_cal *cal, t_vec pos);
+void	ray_casting(t_move *move, t_window *window, int **world_map);
 
 // parse.c
-void open_file_with_validate(char *file_path, t_info *info);
+void	open_file_with_validate(char *file_path, t_info *info);
+int		recovery(t_info *info);
 
-void exit_with_error(char *str);
+// map.c
+void	malloc_map(t_info *info);
+int		record_map_data(char *line, t_info *info);
+int		save_map(char *file_path, t_info *info);
 
-char *get_next_line_without_nl(int fd);
+// config_setter.c
+int		save_wall_texture(char *line, enum e_direction direction, t_info *info);
+int		save_ceil_floor_color(char *value, enum e_zAxis z, t_info *info);
+int		set_player_pos_direction(t_move *move, char dir, \
+	int width_index, int height_index);
+
+// validation.c
+int		is_valid_map_line(char *line);
+void	file_extention_validator(char *file_name);
+int		validation_map(t_info *info);
+int		validation_config(t_info *info);
+
+// error.c
+void	exit_with_error(char *str);
+
+// utils.c
+char	*get_next_line_without_nl(int fd);
+int		ft_close(int fd);
+int		ft_open(char *str);
+int		free_split(char **split);
+int		jump(int fd, t_info *info);
 
 #endif
