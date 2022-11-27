@@ -11,13 +11,14 @@ SRC		= main.c \
 		  key.c \
 		  raycasting.c \
 		  vector_utils.c \
-			parse.c
-
+	      parse.c \
+		  error.c \
+		  utils.c
 
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -O3
+CFLAGS	= -Wall -Wextra -Werror -g -O3 -fsanitize=address
 
 MLX		= ./mlx/
 MLX_LNK	= -L $(MLX) -lmlx -framework OpenGL -framework AppKit
@@ -44,7 +45,7 @@ $(LIBFT):
 
 $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFTGNL_DIR)
-	$(CC) $(OBJ) $(MLX_LNK) $(LIBFT_LIB) -lm -o $(NAME)
+	$(CC) $(OBJ) $(MLX_LNK) $(LIBFT_LIB) $(CFLAGS) -lm -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)

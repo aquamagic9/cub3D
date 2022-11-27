@@ -32,7 +32,8 @@ FILES		=	ft_strlen \
 				ft_putstr_fd \
 				ft_putendl_fd \
 				ft_putnbr_fd \
-				ft_memmove 
+				ft_memmove \
+				ft_isspace
 
 FILES_BONUS	=	ft_lstnew \
 				ft_lstadd_front \
@@ -60,7 +61,7 @@ RM			= rm -f
 NAME		= libft.a
 
 .c.o:		$(SRCS) $(SRCS_BONUS)
-			$(CC) $(CFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) -I../../includes -c $< -o $@
 
 all:		$(NAME)
 
