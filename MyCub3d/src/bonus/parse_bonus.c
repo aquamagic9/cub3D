@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junseo <junseo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 21:55:38 by junseo            #+#    #+#             */
-/*   Updated: 2022/11/28 00:01:08 by junseo           ###   ########.fr       */
+/*   Updated: 2022/11/28 01:16:02 by junseo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	type_router(char *type, char *value, t_info *info)
 {
 	if (info->map_height > 0)
-		exit_with_error("Invalid config position found between map");
+		exit_with_error("Invalid config position");
 	if (ft_strncmp(type, "NO", 3) == 0)
 		return (save_wall_texture(value, D_NORTH, info));
 	else if (ft_strncmp(type, "SO", 3) == 0)
