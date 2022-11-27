@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-void	find_perp_wall_dist(t_cal *cal, int worldMap[mapWidth][mapHeight])
+void	find_perp_wall_dist(t_cal *cal, int **worldMap)
 {
 	while (1)
 	{
@@ -51,7 +51,7 @@ void	find_distance(t_cal *cal, t_vec pos)
 	}
 }
 
-void	ray_casting(t_move *move, t_window *window, int worldMap[mapWidth][mapHeight])
+void	ray_casting(t_move *move, t_window *window, int **worldMap)
 {
 	int		x;
 	double	camera_x;

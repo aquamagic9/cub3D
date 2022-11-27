@@ -18,8 +18,8 @@ void	set_buf(int buf[height][width])
 
 void	init_move(t_move *move)
 {
-	move->pos.vx = 22.0;
-	move->pos.vy = 11.5;
+	move->pos.vx = -1.0;
+	move->pos.vy = -1.0;
 	move->dir.vx = 0.0;
 	move->dir.vy = -1.0;
 	move->plane.vx = 0.66;
@@ -50,9 +50,23 @@ void	init_window(t_window *window)
 void	init(t_info *info)
 {
 	init_move(&info->move);
-	init_key(&info->key);
-	init_window(&info->window);
-	set_buf(info->window.buf);
+	// init_key(&info->key);
+	// init_window(&info->window);
+	// set_buf(info->window.buf);
+	// TODO: 개선 필요 하드코딩함
+	info->texture_file = (char **)malloc(sizeof(char *) * 4);
+	ft_bzero(info->texture_file, sizeof(char *) * 4);
+	info->color_set = malloc(sizeof(t_color) * 2);
+	info->color_set[Z_CEILING].r = -1;
+	info->color_set[Z_CEILING].g = -1;
+	info->color_set[Z_CEILING].b = -1;
+	info->color_set[Z_FLOOR].r = -1;
+	info->color_set[Z_FLOOR].g = -1;
+	info->color_set[Z_FLOOR].b = -1;
+	info->map_height = 0;
+	info->map_width = 0;
+	info->map_start_index = 0;
+	ft_bzero(info->texture_file, sizeof(char *) * 4);
 }
 
 void	load_image(t_window *window, int *texture, char *path, t_img *img)

@@ -19,7 +19,7 @@ int	key_release(int key, t_key *key_state)
 	return (0);
 }
 
-void	key_update(t_key *key, t_move *move, int worldMap[mapWidth][mapHeight])
+void	key_update(t_key *key, t_move *move, int **worldMap)
 {
 	if (key->key_w)
 	{
@@ -50,9 +50,9 @@ void	key_update(t_key *key, t_move *move, int worldMap[mapWidth][mapHeight])
 			move->pos.vy += move->plane.vy * move->moveSpeed;
 	}
 	if (key->key_left)
-		rotate_my_view(move, move->rotSpeed);
-	if (key->key_right)
 		rotate_my_view(move, -move->rotSpeed);
+	if (key->key_right)
+		rotate_my_view(move, move->rotSpeed);
 	if (key->key_esc)
 		exit(0);
 }

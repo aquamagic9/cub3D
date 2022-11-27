@@ -71,7 +71,7 @@ void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 	}
 }
 
-void	put_texture(t_cal *cal, t_move *move, t_window *window, int worldMap[mapWidth][mapHeight], int x)
+void	put_texture(t_cal *cal, t_move *move, t_window *window, int **worldMap, int x)
 {
 	t_textureInfo	t;
 
