@@ -18,7 +18,7 @@ SRC		= main.c \
 OBJ		= $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -O3 -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g -O3
 
 MLX		= ./mlx/
 MLX_LNK	= -L $(MLX) -lmlx -framework OpenGL -framework AppKit

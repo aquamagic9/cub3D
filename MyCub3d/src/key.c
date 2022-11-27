@@ -21,34 +21,63 @@ int	key_release(int key, t_key *key_state)
 
 void	key_update(t_key *key, t_move *move, int **worldMap)
 {
+	// if (key->key_w)
+	// {
+	// 	if (!worldMap[(int)(move->pos.vx + move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
+	// 		move->pos.vx += move->dir.vx * move->moveSpeed;
+	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->dir.vy * move->moveSpeed)])
+	// 		move->pos.vy += move->dir.vy * move->moveSpeed;
+	// }
+	// if (key->key_s)
+	// {
+	// 	if (!worldMap[(int)(move->pos.vx - move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
+	// 		move->pos.vx -= move->dir.vx * move->moveSpeed;
+	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->dir.vy * move->moveSpeed)])
+	// 		move->pos.vy -= move->dir.vy * move->moveSpeed;
+	// }
+	// if (key->key_a)
+	// {
+	// 	if (!worldMap[(int)(move->pos.vx - move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
+	// 		move->pos.vx -= move->plane.vx * move->moveSpeed;
+	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->plane.vy * move->moveSpeed)])
+	// 		move->pos.vy -= move->plane.vy * move->moveSpeed;
+	// }
+	// if (key->key_d)
+	// {
+	// 	if (!worldMap[(int)(move->pos.vx + move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
+	// 		move->pos.vx += move->plane.vx * move->moveSpeed;
+	// 	if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->plane.vy * move->moveSpeed)])
+	// 		move->pos.vy += move->plane.vy * move->moveSpeed;
+	// }
 	if (key->key_w)
 	{
-		if (!worldMap[(int)(move->pos.vx + move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
+		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx + move->dir.vx * move->moveSpeed)])
 			move->pos.vx += move->dir.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->dir.vy * move->moveSpeed)])
+		if (!worldMap[(int)(move->pos.vy + move->dir.vy * move->moveSpeed)][(int)(move->pos.vx)])
 			move->pos.vy += move->dir.vy * move->moveSpeed;
 	}
 	if (key->key_s)
 	{
-		if (!worldMap[(int)(move->pos.vx - move->dir.vx * move->moveSpeed)][(int)(move->pos.vy)])
+		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx - move->dir.vx * move->moveSpeed)])
 			move->pos.vx -= move->dir.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->dir.vy * move->moveSpeed)])
+		if (!worldMap[(int)(move->pos.vy - move->dir.vy * move->moveSpeed)][(int)(move->pos.vx)])
 			move->pos.vy -= move->dir.vy * move->moveSpeed;
 	}
 	if (key->key_a)
 	{
-		if (!worldMap[(int)(move->pos.vx - move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
+		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx - move->plane.vx * move->moveSpeed)])
 			move->pos.vx -= move->plane.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy - move->plane.vy * move->moveSpeed)])
+		if (!worldMap[(int)(move->pos.vy - move->plane.vy * move->moveSpeed)][(int)(move->pos.vx)])
 			move->pos.vy -= move->plane.vy * move->moveSpeed;
 	}
 	if (key->key_d)
 	{
-		if (!worldMap[(int)(move->pos.vx + move->plane.vx * move->moveSpeed)][(int)(move->pos.vy)])
+		if (!worldMap[(int)(move->pos.vy)][(int)(move->pos.vx + move->plane.vx * move->moveSpeed)])
 			move->pos.vx += move->plane.vx * move->moveSpeed;
-		if (!worldMap[(int)(move->pos.vx)][(int)(move->pos.vy + move->plane.vy * move->moveSpeed)])
+		if (!worldMap[(int)(move->pos.vy + move->plane.vy * move->moveSpeed)][(int)(move->pos.vx)])
 			move->pos.vy += move->plane.vy * move->moveSpeed;
 	}
+
 	if (key->key_left)
 		rotate_my_view(move, -move->rotSpeed);
 	if (key->key_right)

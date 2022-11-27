@@ -18,6 +18,7 @@
 #define mapHeight 24
 #define width 640
 #define height 480
+#define PI 3.141592
 
 #define K_A 0
 #define K_S 1
@@ -47,6 +48,13 @@ enum e_direction
 	D_SOUTH,
 	D_WEST,
 	D_EAST
+};
+
+enum e_map
+{
+	M_BLANK,
+	M_WALL,
+	M_VOID
 };
 
 enum e_zAxis
@@ -166,7 +174,7 @@ t_vec multiple_vector(double k, t_vec a);
 int set_texture(int ***texture);
 void draw_background(int buf[height][width], int floorColor, int ceilColor);
 void draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x);
-void put_texture(t_cal *cal, t_move *move, t_window *window, int **worldMap, int x);
+void put_texture(t_cal *cal, t_move *move, t_window *window, int x);
 void draw(t_window *window);
 
 // key.c
@@ -175,9 +183,11 @@ void key_update(t_key *key, t_move *move, int **worldMap);
 int key_press(int key, t_key *key_state);
 
 // init.c
+int	switch_color(t_color color);
 void init(t_info *info);
 void load_image(t_window *window, int *texture, char *path, t_img *img);
-void load_texture(t_window *win);
+void load_texture(t_info *info);
+void set_color(t_color *color, int r, int g, int b);
 
 // raycasting.c
 void find_perp_wall_dist(t_cal *cal, int **worldMap);

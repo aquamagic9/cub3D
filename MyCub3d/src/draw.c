@@ -44,7 +44,7 @@ void	draw_background(int buf[height][width], int floorColor, int ceilColor)
 	}
 }
 
-void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
+void		draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 {
 	int		tex_x;
 	int		tex_y;
@@ -71,7 +71,7 @@ void	draw_texture(t_textureInfo *t, t_cal *cal, t_window *window, int x)
 	}
 }
 
-void	put_texture(t_cal *cal, t_move *move, t_window *window, int **worldMap, int x)
+void	put_texture(t_cal *cal, t_move *move, t_window *window, int x)
 {
 	t_textureInfo	t;
 
@@ -83,15 +83,14 @@ void	put_texture(t_cal *cal, t_move *move, t_window *window, int **worldMap, int
 	if (t.drawEnd >= height)
 		t.drawEnd = height - 1;
 	
-	t.textureNum = worldMap[cal->map.X][cal->map.Y] - 1; // TODO(hyuncho) : 나중에 삭제
 	if (cal->side == 0 && cal->rayDir.vx > 0)
-		t.textureNum = 1;//서
+		t.textureNum = D_WEST;//서
 	else if (cal->side == 0 && cal->rayDir.vx <= 0)
-		t.textureNum = 4;//동
+		t.textureNum = D_EAST;//동
 	else if (cal->side == 1 && cal->rayDir.vy > 0)
-		t.textureNum = 2;//북
+		t.textureNum = D_NORTH;//북
 	else if (cal->side == 1 && cal->rayDir.vy <= 0)
-		t.textureNum = 3;//남
+		t.textureNum = D_SOUTH;//남
 
 	if (cal->side == 0)
 		t.wallX = move->pos.vy + cal->perpWallDist * cal->rayDir.vy;

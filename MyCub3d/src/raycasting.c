@@ -4,7 +4,7 @@ void	find_perp_wall_dist(t_cal *cal, int **worldMap)
 {
 	while (1)
 	{
-		if (worldMap[cal->map.X][cal->map.Y] > 0)
+		if (worldMap[cal->map.Y][cal->map.X] > 0)
 			break ;
 		if (cal->sideDist.X < cal->sideDist.Y)
 		{
@@ -66,6 +66,6 @@ void	ray_casting(t_move *move, t_window *window, int **worldMap)
 		cal.map.Y = (int)move->pos.vy;
 		find_distance(&cal, move->pos);
 		find_perp_wall_dist(&cal, worldMap);
-		put_texture(&cal, move, window, worldMap, x);
+		put_texture(&cal, move, window, x);
 	}
 }
